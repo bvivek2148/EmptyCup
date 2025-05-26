@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Frontend API Connection Test</h1>
+    
+    <div id="config-info" class="result info">
+        <h3>Configuration</h3>
+        <p><strong>Current URL:</strong> <span id="current-url"></span></p>
+        <p><strong>Environment:</strong> <span id="environment"></span></p>
+        <p><strong>API Base URL:</strong> <span id="api-base-url"></span></p>
+    </div>
+
+    <div>
+        <button onclick="testAPI()">Test API Connection</button>
+        <button onclick="testListingsLoad()">Test Listings Load</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script src="frontend/config.js"></script>
+    <script>
+        // Display configuration info
+        document.getElementById('current-url').textContent = window.location.href;
+        
+        const environment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'development'
+            : 'production';
+        document.getElementById('environment').textContent = environment;
+        
+        const apiBaseUrl = window.APP_CONFIG ? window.APP_CONFIG.API_BASE_URL : 'Not loaded';
+        document.getElementById('api-base-url').textContent = apiBaseUrl;
+
+        function addResult(title, content, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `result ${type}`;
+            resultDiv.innerHTML = `
+                <h4>${title}</h4>
+                <pre>${content}</pre>
+                <small>Time: ${new Date().toLocaleTimeString()}</small>
+            `;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        async function testAPI() {
+            try {
+                const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/health` : '/api/health';
+                addResult('Testing API Health', `Making request to: ${apiUrl}`, 'info');
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('✅ API Health Check Success', JSON.stringify(data, null, 2), 'success');
+                } else {
+                    addResult('❌ API Health Check Failed', `Status: ${response.status}\n${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ API Health Check Error', error.message, 'error');
+            }
+        }
+
+        async function testListingsLoad() {
+            try {
+                const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
+                addResult('Testing Listings Load', `Making request to: ${apiUrl}`, 'info');
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('✅ Listings Load Success', 
+                        `Found ${data.length} properties:\n${JSON.stringify(data.slice(0, 2), null, 2)}${data.length > 2 ? '\n... and more' : ''}`, 
+                        'success');
+                    
+                    // Test if we can create property cards
+                    testPropertyCardCreation(data[0]);
+                } else {
+                    addResult('❌ Listings Load Failed', `Status: ${response.status}\n${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Listings Load Error', error.message, 'error');
+            }
+        }
+
+        function testPropertyCardCreation(property) {
+            try {
+                // Test the property card creation logic
+                const formattedPrice = property.price.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    maximumFractionDigits: 0
+                });
+                
+                const bedroomText = property.bedrooms === 0 ? 'Studio' : `${property.bedrooms} bed${property.bedrooms > 1 ? 's' : ''}`;
+                
+                const cardInfo = {
+                    title: property.title,
+                    price: formattedPrice,
+                    bedrooms: bedroomText,
+                    bathrooms: property.bathrooms,
+                    area: property.area,
+                    location: property.location
+                };
+                
+                addResult('✅ Property Card Creation Test', 
+                    `Successfully processed property data:\n${JSON.stringify(cardInfo, null, 2)}`, 
+                    'success');
+            } catch (error) {
+                addResult('❌ Property Card Creation Error', error.message, 'error');
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addResult('🚀 Auto-testing started', 'Running automatic tests...', 'info');
+                testAPI();
+                setTimeout(() => testListingsLoad(), 1000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

@@ -16,7 +16,7 @@
 </head>
 <body>
     <h1>🔧 EmptyCup API Debug Tool</h1>
-    
+
     <div class="test-result info">
         <h3>Environment Information</h3>
         <p><strong>Current URL:</strong> <span id="current-url"></span></p>
@@ -38,13 +38,20 @@
     <script>
         // Display environment info
         document.getElementById('current-url').textContent = window.location.href;
-        
+
         const environment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'development'
             : 'production';
         document.getElementById('environment').textContent = environment;
-        
-        const apiBaseUrl = window.APP_CONFIG ? window.APP_CONFIG.API_BASE_URL : 'Not loaded';
+
+        let apiBaseUrl = 'Not loaded';
+        if (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+            apiBaseUrl = window.APP_CONFIG.API_BASE_URL;
+        } else if (window.EMPTYCUP_CONFIG && window.EMPTYCUP_CONFIG.apiBaseUrl) {
+            apiBaseUrl = window.EMPTYCUP_CONFIG.apiBaseUrl;
+        } else {
+            apiBaseUrl = 'Config failed - using fallback: https://emptycup-backend-17wz.onrender.com';
+        }
         document.getElementById('api-base-url').textContent = apiBaseUrl;
 
         function addResult(title, content, type = 'info') {
@@ -61,12 +68,19 @@
 
         async function testHealthEndpoint() {
             try {
-                const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/health` : '/api/health';
+                let apiUrl;
+                if (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+                    apiUrl = `${window.APP_CONFIG.API_BASE_URL}/api/health`;
+                } else if (window.EMPTYCUP_CONFIG && window.EMPTYCUP_CONFIG.apiBaseUrl) {
+                    apiUrl = `${window.EMPTYCUP_CONFIG.apiBaseUrl}/api/health`;
+                } else {
+                    apiUrl = 'https://emptycup-backend-17wz.onrender.com/api/health';
+                }
                 addResult('Testing Health Endpoint', `Making request to: ${apiUrl}`, 'info');
-                
+
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     addResult('✅ Health Endpoint Success', JSON.stringify(data, null, 2), 'success');
                 } else {
@@ -79,12 +93,19 @@
 
         async function testListingsEndpoint() {
             try {
-                const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
+                let apiUrl;
+                if (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+                    apiUrl = `${window.APP_CONFIG.API_BASE_URL}/api/listings`;
+                } else if (window.EMPTYCUP_CONFIG && window.EMPTYCUP_CONFIG.apiBaseUrl) {
+                    apiUrl = `${window.EMPTYCUP_CONFIG.apiBaseUrl}/api/listings`;
+                } else {
+                    apiUrl = 'https://emptycup-backend-17wz.onrender.com/api/listings';
+                }
                 addResult('Testing Listings Endpoint', `Making request to: ${apiUrl}`, 'info');
-                
+
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     addResult('✅ Listings Endpoint Success', `Found ${data.length} properties:\n${JSON.stringify(data.slice(0, 2), null, 2)}...`, 'success');
                 } else {
@@ -99,10 +120,10 @@
             try {
                 const directUrl = 'https://emptycup-backend-17wz.onrender.com/api/listings';
                 addResult('Testing Direct API Call', `Making request to: ${directUrl}`, 'info');
-                
+
                 const response = await fetch(directUrl);
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     addResult('✅ Direct API Success', `Found ${data.length} properties:\n${JSON.stringify(data.slice(0, 1), null, 2)}...`, 'success');
                 } else {

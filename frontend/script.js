@@ -46,12 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '';
         console.log('Is homepage:', isHomePage, 'Path:', window.location.pathname);
 
-        // Always load featured listings for now to test
-        console.log('Loading featured listings...');
-        fetchFeaturedListings();
-    } else {
-        console.log('No listings container found on this page');
-    }
+        if (isHomePage) {
+            // Load featured listings for homepage (first 3 properties)
+            console.log('Loading featured listings for homepage...');
+            fetchFeaturedListings();
+        } else {
+            // Load all listings for listings page
+            console.log('Loading all listings for listings page...');
+            fetchListings();
+        }
 
         // Add event listeners for search and filters if elements exist
         if (searchButton && searchInput) {
@@ -66,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (priceFilter) priceFilter.addEventListener('change', filterListings);
         if (bedroomsFilter) bedroomsFilter.addEventListener('change', filterListings);
         if (sortFilter) sortFilter.addEventListener('change', filterListings);
+    } else {
+        console.log('No listings container found on this page');
     }
 
     // Add event listeners for authentication forms
@@ -145,10 +150,23 @@ async function fetchFeaturedListings() {
         // Show loading state
         listingsContainer.innerHTML = '<div class="loading">Loading featured properties...</div>';
 
-        // Use the proper API URL from config
-        const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
+        // Use the proper API URL from config with fallback
+        let apiUrl;
+        if (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+            apiUrl = `${window.APP_CONFIG.API_BASE_URL}/api/listings`;
+        } else if (window.EMPTYCUP_CONFIG && window.EMPTYCUP_CONFIG.apiBaseUrl) {
+            apiUrl = `${window.EMPTYCUP_CONFIG.apiBaseUrl}/api/listings`;
+        } else {
+            // Fallback to production URL if config fails to load
+            apiUrl = 'https://emptycup-backend-17wz.onrender.com/api/listings';
+        }
+
         console.log('Making API call to:', apiUrl);
         console.log('Environment:', window.location.hostname);
+        console.log('Config status:', {
+            APP_CONFIG: !!window.APP_CONFIG,
+            EMPTYCUP_CONFIG: !!window.EMPTYCUP_CONFIG
+        });
 
         const response = await fetch(apiUrl, {
             method: 'GET',
@@ -190,8 +208,18 @@ async function fetchListings() {
         // Show loading state
         listingsContainer.innerHTML = '<div class="loading">Loading properties...</div>';
 
-        // Fetch data from the backend
-        const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
+        // Fetch data from the backend with fallback
+        let apiUrl;
+        if (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+            apiUrl = `${window.APP_CONFIG.API_BASE_URL}/api/listings`;
+        } else if (window.EMPTYCUP_CONFIG && window.EMPTYCUP_CONFIG.apiBaseUrl) {
+            apiUrl = `${window.EMPTYCUP_CONFIG.apiBaseUrl}/api/listings`;
+        } else {
+            // Fallback to production URL if config fails to load
+            apiUrl = 'https://emptycup-backend-17wz.onrender.com/api/listings';
+        }
+
+        console.log('fetchListings - Making API call to:', apiUrl);
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
