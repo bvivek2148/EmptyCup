@@ -5,7 +5,7 @@ const config = {
         API_BASE_URL: 'http://localhost:12001'
     },
     production: {
-        API_BASE_URL: 'https://emptycup-backend-17wz.onrender.com'  // Replace 'xyz' with your actual Render URL
+        API_BASE_URL: 'https://emptycup-backend-17wz.onrender.com'
     }
 };
 

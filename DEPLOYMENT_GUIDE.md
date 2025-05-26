@@ -39,9 +39,15 @@ This guide will help you deploy your EmptyCup Property Listings application with
 1. **Update config.js**: Replace the production API URL in `frontend/config.js`:
    ```javascript
    production: {
-       API_BASE_URL: 'https://your-actual-render-url.onrender.com'  // Replace with your Render URL
+       API_BASE_URL: 'https://emptycup-backend-17wz.onrender.com'  // Your actual Render URL
    }
    ```
+
+## 🌐 Live Application URLs
+
+- **Frontend (Netlify)**: https://emptycup-assignment-vivek.netlify.app/
+- **Backend (Render)**: https://emptycup-backend-17wz.onrender.com
+- **API Endpoint**: https://emptycup-backend-17wz.onrender.com/api/listings
 
 ## Step 4: Deploy Frontend on Netlify
 
