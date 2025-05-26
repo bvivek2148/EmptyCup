@@ -2,7 +2,7 @@
 
 A modern, responsive web application for browsing, filtering, and shortlisting property listings. Built with a Flask backend and vanilla JavaScript frontend, featuring real-time property data, interactive shortlisting, and seamless user experience across all devices.
 
-![EmptyCup Property Listings](https://emptycup-assignment-vivek.netlify.app/)
+## 🌟 Live Demo: [EmptyCup Property Listings](https://emptycup-assignment-vivek.netlify.app/)
 
 ## 🌟 Live Demo
 
