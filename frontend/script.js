@@ -143,9 +143,10 @@ async function fetchFeaturedListings() {
         // Show loading state
         listingsContainer.innerHTML = '<div class="loading">Loading featured properties...</div>';
 
-        // Simple API call without config complexity
-        console.log('Making API call to /api/listings');
-        const response = await fetch('/api/listings');
+        // Use the proper API URL from config
+        const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
+        console.log('Making API call to:', apiUrl);
+        const response = await fetch(apiUrl);
         console.log('Response received:', response.status, response.ok);
 
         if (!response.ok) {

@@ -26,7 +26,6 @@ A modern, responsive web application for browsing, filtering, and shortlisting p
 - [🔧 Troubleshooting](#-troubleshooting)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
-- [📞 Contact](#-contact)
 
 ## ✨ Features
 

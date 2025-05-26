@@ -4,7 +4,19 @@ import json
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
+
+# Configure CORS to allow your Netlify domain
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://emptycup-assignment-vivek.netlify.app",
+            "http://localhost:*",
+            "http://127.0.0.1:*"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Disable caching for development
 @app.after_request
@@ -20,6 +32,14 @@ def load_listings():
     json_path = os.path.join(script_dir, 'listings.json')
     with open(json_path, 'r') as file:
         return json.load(file)
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    return jsonify({
+        "status": "healthy",
+        "message": "EmptyCup Backend API is running",
+        "endpoints": ["/api/listings", "/api/listings/<id>"]
+    })
 
 @app.route('/api/listings', methods=['GET'])
 def get_listings():
