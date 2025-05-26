@@ -139,6 +139,8 @@ function updateStatsWithRealData() {
 // Fetch featured listings for homepage (first 3 properties)
 async function fetchFeaturedListings() {
     console.log('fetchFeaturedListings called');
+    console.log('APP_CONFIG:', window.APP_CONFIG);
+
     try {
         // Show loading state
         listingsContainer.innerHTML = '<div class="loading">Loading featured properties...</div>';
@@ -146,8 +148,15 @@ async function fetchFeaturedListings() {
         // Use the proper API URL from config
         const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
         console.log('Making API call to:', apiUrl);
-        const response = await fetch(apiUrl);
-        console.log('Response received:', response.status, response.ok);
+        console.log('Environment:', window.location.hostname);
+
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log('Response received:', response.status, response.ok, response.statusText);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

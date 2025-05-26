@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - EmptyCup API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 EmptyCup API Debug Tool</h1>
+    
+    <div class="test-result info">
+        <h3>Environment Information</h3>
+        <p><strong>Current URL:</strong> <span id="current-url"></span></p>
+        <p><strong>Environment:</strong> <span id="environment"></span></p>
+        <p><strong>API Base URL:</strong> <span id="api-base-url"></span></p>
+    </div>
+
+    <div>
+        <h3>API Tests</h3>
+        <button onclick="testHealthEndpoint()">Test Health Endpoint</button>
+        <button onclick="testListingsEndpoint()">Test Listings Endpoint</button>
+        <button onclick="testDirectAPI()">Test Direct API Call</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script src="config.js"></script>
+    <script>
+        // Display environment info
+        document.getElementById('current-url').textContent = window.location.href;
+        
+        const environment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'development'
+            : 'production';
+        document.getElementById('environment').textContent = environment;
+        
+        const apiBaseUrl = window.APP_CONFIG ? window.APP_CONFIG.API_BASE_URL : 'Not loaded';
+        document.getElementById('api-base-url').textContent = apiBaseUrl;
+
+        function addResult(title, content, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.innerHTML = `
+                <h4>${title}</h4>
+                <pre>${content}</pre>
+                <small>Time: ${new Date().toLocaleTimeString()}</small>
+            `;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        async function testHealthEndpoint() {
+            try {
+                const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/health` : '/api/health';
+                addResult('Testing Health Endpoint', `Making request to: ${apiUrl}`, 'info');
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('✅ Health Endpoint Success', JSON.stringify(data, null, 2), 'success');
+                } else {
+                    addResult('❌ Health Endpoint Failed', `Status: ${response.status}\n${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Health Endpoint Error', error.message, 'error');
+            }
+        }
+
+        async function testListingsEndpoint() {
+            try {
+                const apiUrl = window.APP_CONFIG ? `${window.APP_CONFIG.API_BASE_URL}/api/listings` : '/api/listings';
+                addResult('Testing Listings Endpoint', `Making request to: ${apiUrl}`, 'info');
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('✅ Listings Endpoint Success', `Found ${data.length} properties:\n${JSON.stringify(data.slice(0, 2), null, 2)}...`, 'success');
+                } else {
+                    addResult('❌ Listings Endpoint Failed', `Status: ${response.status}\n${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Listings Endpoint Error', error.message, 'error');
+            }
+        }
+
+        async function testDirectAPI() {
+            try {
+                const directUrl = 'https://emptycup-backend-17wz.onrender.com/api/listings';
+                addResult('Testing Direct API Call', `Making request to: ${directUrl}`, 'info');
+                
+                const response = await fetch(directUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('✅ Direct API Success', `Found ${data.length} properties:\n${JSON.stringify(data.slice(0, 1), null, 2)}...`, 'success');
+                } else {
+                    addResult('❌ Direct API Failed', `Status: ${response.status}\n${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Direct API Error', error.message, 'error');
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addResult('🚀 Auto-testing started', 'Running automatic tests...', 'info');
+                testHealthEndpoint();
+                setTimeout(() => testListingsEndpoint(), 1000);
+                setTimeout(() => testDirectAPI(), 2000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

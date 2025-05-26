@@ -5,14 +5,10 @@ import os
 
 app = Flask(__name__)
 
-# Configure CORS to allow your Netlify domain
+# Configure CORS to allow all origins for now (for debugging)
 CORS(app, resources={
-    r"/api/*": {
-        "origins": [
-            "https://emptycup-assignment-vivek.netlify.app",
-            "http://localhost:*",
-            "http://127.0.0.1:*"
-        ],
+    r"/*": {
+        "origins": "*",
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
     }
