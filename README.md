@@ -6,9 +6,10 @@ A modern, responsive web application for browsing, filtering, and shortlisting p
 
 ## 🌟 Live Demo
 
-- **Frontend**: Ready for deployment on Netlify
-- **Backend**: Ready for deployment on Render
-- **Local Development**: `http://localhost:12001`
+- **🌐 Frontend**: https://emptycup-assignment-vivek.netlify.app/
+- **⚙️ Backend**: https://emptycup-backend-17wz.onrender.com
+- **🔌 API**: https://emptycup-backend-17wz.onrender.com/api/listings
+- **💻 Local Development**: `http://localhost:12001`
 
 ## 📋 Table of Contents
 
@@ -594,22 +595,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - ✅ Private use allowed
 - ❌ No warranty provided
 - ❌ No liability accepted
-
-## 📞 Contact
-
-### 🏢 EmptyCup Team
-
-- **📧 Email**: support@emptycup.com
-- **🌐 Website**: https://www.emptycup.com
-- **💼 LinkedIn**: [EmptyCup Company](https://linkedin.com/company/emptycup)
-- **🐙 GitHub**: [EmptyCup Organization](https://github.com/emptycup)
-
-### 🆘 Support
-
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/emptycup/property-listings/issues)
-- **💡 Feature Requests**: [GitHub Discussions](https://github.com/emptycup/property-listings/discussions)
-- **📚 Documentation**: [Wiki](https://github.com/emptycup/property-listings/wiki)
-- **💬 Community**: [Discord Server](https://discord.gg/emptycup)
 
 ### 🌟 Acknowledgments
 
