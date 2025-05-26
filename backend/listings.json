@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Modern Apartment in Downtown",
+    "location": "123 Main St, Downtown",
+    "price": 1500,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 850,
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXBhcnRtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+    "description": "Beautiful modern apartment in the heart of downtown with great amenities."
+  },
+  {
+    "id": 2,
+    "title": "Cozy Studio near University",
+    "location": "456 College Ave, University District",
+    "price": 900,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 450,
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHN0dWRpbyUyMGFwYXJ0bWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    "description": "Perfect studio for students, walking distance to campus and local amenities."
+  },
+  {
+    "id": 3,
+    "title": "Luxury Condo with City View",
+    "location": "789 Skyline Blvd, Hillcrest",
+    "price": 2800,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 1200,
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGx1eHVyeSUyMGNvbmRvfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+    "description": "Spacious luxury condo with breathtaking city views and premium finishes."
+  },
+  {
+    "id": 4,
+    "title": "Charming Cottage in Suburbs",
+    "location": "101 Oak Lane, Greenfield",
+    "price": 1800,
+    "bedrooms": 2,
+    "bathrooms": 1.5,
+    "area": 950,
+    "image": "https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y290dGFnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    "description": "Quaint cottage in a peaceful suburban neighborhood with a lovely garden."
+  },
+  {
+    "id": 5,
+    "title": "Renovated Loft in Arts District",
+    "location": "222 Gallery Way, Arts District",
+    "price": 2200,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 1000,
+    "image": "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bG9mdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    "description": "Stylish renovated loft with high ceilings and industrial charm in the vibrant Arts District."
+  },
+  {
+    "id": 6,
+    "title": "Family Home with Backyard",
+    "location": "333 Maple Drive, Riverside",
+    "price": 2500,
+    "bedrooms": 4,
+    "bathrooms": 2.5,
+    "area": 1800,
+    "image": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aG91c2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+    "description": "Spacious family home with a large backyard, perfect for entertaining and children."
+  }
+]

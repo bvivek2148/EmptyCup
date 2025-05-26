@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .property { border: 1px solid #ccc; margin: 10px; padding: 10px; }
+        .loading { color: #666; font-style: italic; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Simple Property Test</h1>
+    <div id="status">Loading...</div>
+    <div id="properties"></div>
+
+    <script>
+        console.log('Script starting...');
+        
+        async function loadProperties() {
+            const statusDiv = document.getElementById('status');
+            const propertiesDiv = document.getElementById('properties');
+            
+            try {
+                console.log('Fetching properties...');
+                statusDiv.textContent = 'Fetching properties...';
+                
+                const response = await fetch('/api/listings');
+                console.log('Response:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const properties = await response.json();
+                console.log('Properties loaded:', properties.length);
+                
+                statusDiv.textContent = `Loaded ${properties.length} properties successfully!`;
+                statusDiv.style.color = 'green';
+                
+                // Display properties
+                propertiesDiv.innerHTML = properties.map(prop => `
+                    <div class="property">
+                        <h3>${prop.title}</h3>
+                        <p>Price: $${prop.price}</p>
+                        <p>Location: ${prop.location}</p>
+                        <p>Bedrooms: ${prop.bedrooms}, Bathrooms: ${prop.bathrooms}</p>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.textContent = `Error: ${error.message}`;
+                statusDiv.className = 'error';
+            }
+        }
+        
+        // Load properties when page loads
+        document.addEventListener('DOMContentLoaded', loadProperties);
+    </script>
+</body>
+</html>
